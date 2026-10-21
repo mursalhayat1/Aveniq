@@ -1,0 +1,143 @@
+<UserControl x:Class="Aveniq.Desktop.Views.PerformanceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:Aveniq.Desktop.Controls">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="0,0,4,20">
+
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,12,12">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,1">
+                            <TextBlock DockPanel.Dock="Right" Text="{Binding RateNow}" FontFamily="{StaticResource MonoFont}"
+                                       FontSize="11" Foreground="{StaticResource AccentHover}" VerticalAlignment="Center" />
+                            <TextBlock Text="Transfer rate" Style="{StaticResource H2}" Margin="0" />
+                        </DockPanel>
+                        <TextBlock Text="Last 5 minutes · all mounted drives" Style="{StaticResource Caption}" />
+                        <c:Sparkline Values="{Binding Rate}" Height="124" Stroke="{StaticResource Accent}" Capacity="300"
+                                     Format="{Binding RateFormat}" EmptyText="No transfers yet" Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,1">
+                            <TextBlock DockPanel.Dock="Right" Text="{Binding HitNow}" FontFamily="{StaticResource MonoFont}"
+                                       FontSize="11" Foreground="{StaticResource Cyan}" VerticalAlignment="Center" />
+                            <TextBlock Text="Cache hit rate" Style="{StaticResource H2}" Margin="0" />
+                        </DockPanel>
+                        <TextBlock Text="Share of application reads already on the SSD" Style="{StaticResource Caption}" />
+                        <c:Sparkline Values="{Binding Hit}" Height="124" Stroke="{StaticResource Cyan}" Capacity="300" MaxValue="1"
+                                     EmptyText="Unavailable until a game reads data" Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,12,0">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,1">
+                            <TextBlock DockPanel.Dock="Right" Text="{Binding WaitNow}" FontFamily="{StaticResource MonoFont}"
+                                       FontSize="11" Foreground="{StaticResource Amber}" VerticalAlignment="Center" />
+                            <TextBlock Text="Average read wait" Style="{StaticResource H2}" Margin="0" />
+                        </DockPanel>
+                        <TextBlock Text="Time an application waited for each read" Style="{StaticResource Caption}" />
+                        <c:Sparkline Values="{Binding Wait}" Height="124" Stroke="{StaticResource Amber}" Capacity="300"
+                                     Format="{Binding MsFormat}" EmptyText="Waits appear once the game reads data" Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <DockPanel Margin="0,0,0,1">
+                            <TextBlock DockPanel.Dock="Right" Text="{Binding ReadsNow}" FontFamily="{StaticResource MonoFont}"
+                                       FontSize="11" Foreground="{StaticResource AccentHover}" VerticalAlignment="Center" />
+                            <TextBlock Text="Application reads" Style="{StaticResource H2}" Margin="0" />
+                        </DockPanel>
+                        <TextBlock Text="Reads per second on the virtual drives, prefetch excluded" Style="{StaticResource Caption}" />
+                        <c:Sparkline Values="{Binding Reads}" Height="124" Stroke="{StaticResource AccentHover}" Capacity="300"
+                                     Format="{Binding CountFormat}" EmptyText="No application reads yet" Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Style="{StaticResource Card}" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="Totals since start" Style="{StaticResource H2}" Margin="0,0,0,2" />
+                        <TextBlock Text="Cumulative measurements from rclone and the Aveniq engine."
+                                   Style="{StaticResource Caption}" Margin="0,0,0,5" />
+                        <ItemsControl ItemsSource="{Binding Totals}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,4">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="172" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Key}" FontSize="11" Foreground="{StaticResource Muted}"
+                                                       TextWrapping="Wrap" Margin="0,0,10,0" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Value}" FontSize="11.5" TextWrapping="Wrap"
+                                                       Foreground="{Binding Tone, Converter={StaticResource Tone}}" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Grid.Column="1">
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,2">
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding CacheNow}" FontFamily="{StaticResource MonoFont}"
+                                           FontSize="11" Foreground="{StaticResource AccentHover}" VerticalAlignment="Center" />
+                                <TextBlock Text="Cache on disk" Style="{StaticResource H2}" Margin="0" />
+                            </DockPanel>
+                            <TextBlock Text="Physical bytes currently used by cached data" Style="{StaticResource Caption}" />
+                            <c:Sparkline Values="{Binding Cache}" Height="92" Stroke="{StaticResource Accent}" Capacity="300"
+                                         Format="{Binding BytesFormat}" EmptyText="No cache data yet" Margin="0,8,0,0" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Recent game sessions" Style="{StaticResource H2}" Margin="0,0,0,2" />
+                            <TextBlock Text="The last 20 recorded launch profiles." Style="{StaticResource Caption}" Margin="0,0,0,4" />
+                            <TextBlock Text="No recorded sessions yet. Launch a game to build a profile."
+                                       Style="{StaticResource Caption}" Margin="0,4,0,4"
+                                       Visibility="{Binding SessionHistory.Count, Converter={StaticResource NotVis}}" />
+                            <ItemsControl ItemsSource="{Binding SessionHistory}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,6">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Key}" FontSize="11" FontWeight="SemiBold"
+                                                           TextTrimming="CharacterEllipsis" ToolTip="{Binding Key}" />
+                                                <TextBlock Text="{Binding Value}" Style="{StaticResource Caption}" FontSize="10.5" Margin="0,2,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

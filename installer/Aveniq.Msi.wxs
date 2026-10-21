@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+      Name="Aveniq"
+      Manufacturer="Aveniq Inc."
+      Version="$(var.ProductVersion)"
+      ProductCode="{C108D2A0-1F30-47C3-A075-CE6064249587}"
+      UpgradeCode="{96A0D38E-0DB9-4C79-B865-1CDA82C18894}"
+      Scope="perMachine"
+      Language="1033"
+      Codepage="65001">
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Aveniq is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Property Id="ARPPRODUCTICON" Value="AveniqIcon" />
+    <Property Id="ARPPUBLISHER" Value="Aveniq Inc." />
+    <Property Id="ARPCONTACT" Value="Mursal Hayat" />
+    <Property Id="ARPCOMMENTS" Value="Fully personally developed by Aveniq Inc. Developer: Mursal Hayat. All rights reserved; no contributions." />
+
+    <Icon Id="AveniqIcon" SourceFile="$(var.IconPath)" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="Aveniq" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="Aveniq">
+        <Component Id="ApplicationShortcut" Guid="{BF98791F-A971-5CC6-89F2-86428F141BAD}" Bitness="always64">
+          <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" Directory="ApplicationProgramsFolder" />
+          <Shortcut Id="AveniqStartMenuShortcut" Directory="ApplicationProgramsFolder" Icon="AveniqIcon" WorkingDirectory="INSTALLFOLDER" Name="Aveniq" Target="[INSTALLFOLDER]Aveniq.exe" />
+          <RegistryValue Id="AveniqInstalled" Key="Software\Aveniq" Name="Installed" Root="HKCU" Type="integer" Value="1" KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="MainFeature" Title="Aveniq" Level="1">
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentGroupRef Id="PayloadFiles" />
+    </Feature>
+  </Package>
+
+  <Fragment>
+    <ComponentGroup Id="PayloadFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.PayloadDir)\**" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>

@@ -1,0 +1,9 @@
+<Project Sdk="WixToolset.Sdk/5.0.2">
+  <PropertyGroup>
+    <OutputName>Aveniq-$(ProductVersion)-x64</OutputName>
+    <OutputPath>$(MSBuildThisFileDirectory)..\dist\</OutputPath>
+    <InstallerPlatform>x64</InstallerPlatform>
+    <SuppressPdbOutput>true</SuppressPdbOutput>
+    <DefineConstants>ProductVersion=$(ProductVersion);PayloadDir=$(PayloadDir);IconPath=$(IconPath)</DefineConstants>
+  </PropertyGroup>
+</Project>

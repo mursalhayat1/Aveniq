@@ -1,0 +1,195 @@
+<UserControl x:Class="Aveniq.Desktop.Views.GameLibraryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="0,0,4,14">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Library list -->
+        <DockPanel Margin="0,0,14,0">
+            <DockPanel DockPanel.Dock="Top" Margin="2,0,0,8">
+                <TextBlock DockPanel.Dock="Right" Text="{Binding Games.Count, StringFormat={}{0} games}"
+                           Style="{StaticResource Caption}" VerticalAlignment="Center" />
+                <TextBlock Text="Library" Style="{StaticResource H2}" Margin="0" />
+            </DockPanel>
+
+            <Border DockPanel.Dock="Top" Style="{StaticResource EmptyState}" Margin="0,0,0,8"
+                    Visibility="{Binding Games.Count, Converter={StaticResource NotVis}}">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="&#xE7FC;" FontFamily="{StaticResource IconFont}" FontSize="22"
+                               Foreground="{StaticResource AccentHover}" HorizontalAlignment="Center" />
+                    <TextBlock Text="Your library is empty" Style="{StaticResource EmptyTitle}" Margin="0,8,0,0" />
+                    <TextBlock Text="Mount a drive, then add the folder that holds the game executable."
+                               Style="{StaticResource EmptyText}" Margin="0,3,0,10" />
+                    <Button Style="{StaticResource Primary}" Content="Add game" Command="{Binding AddGameCommand}"
+                            HorizontalAlignment="Center" Margin="0" />
+                </StackPanel>
+            </Border>
+
+            <ListBox ItemsSource="{Binding Games}" SelectedItem="{Binding Selected}"
+                     Style="{StaticResource PlainList}" ItemContainerStyle="{StaticResource RowItem}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border Width="38" Height="38" CornerRadius="8" Background="{StaticResource AccentSoft}"
+                                    BorderBrush="{StaticResource Accent}" BorderThickness="1" Margin="0,0,10,0"
+                                    VerticalAlignment="Top">
+                                <TextBlock Text="{Binding Initial}" FontFamily="{StaticResource DisplayFont}" FontSize="16"
+                                           FontWeight="Bold" Foreground="{StaticResource AccentHover}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="SemiBold"
+                                           TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}" />
+                                <TextBlock Text="{Binding Mode}" FontSize="10.5" Foreground="{StaticResource Muted}" Margin="0,1,0,0" />
+                                <TextBlock Text="{Binding Readiness}" FontSize="10.5" Margin="0,2,0,0"
+                                           Foreground="{Binding ReadinessTone, Converter={StaticResource Tone}}"
+                                           TextTrimming="CharacterEllipsis" ToolTip="{Binding Readiness}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <!-- Empty detail -->
+        <Border Grid.Column="1" Style="{StaticResource EmptyState}"
+                Visibility="{Binding HasSelection, Converter={StaticResource NotVis}}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="&#xE8A5;" FontFamily="{StaticResource IconFont}" FontSize="24"
+                           Foreground="{StaticResource Dim}" HorizontalAlignment="Center" />
+                <TextBlock Text="Select a game" Style="{StaticResource EmptyTitle}" Margin="0,10,0,0" />
+                <TextBlock Text="Compatibility, readiness and launch controls appear here."
+                           Style="{StaticResource EmptyText}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Detail -->
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto"
+                      Visibility="{Binding HasSelection, Converter={StaticResource Vis}}">
+            <StackPanel Margin="0,0,4,0">
+                <Border Style="{StaticResource Card}" Margin="0,0,0,12" Padding="18,16">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Selected.Name}" FontFamily="{StaticResource DisplayFont}"
+                                           FontSize="21" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                <StackPanel Orientation="Horizontal" Margin="0,7,0,0">
+                                    <Border Style="{StaticResource Pill}" BorderBrush="{Binding Selected.CompatTone, Converter={StaticResource Tone}}">
+                                        <TextBlock Text="{Binding Selected.Compat}" FontSize="10.5"
+                                                   Foreground="{Binding Selected.CompatTone, Converter={StaticResource Tone}}" />
+                                    </Border>
+                                    <Border Style="{StaticResource Pill}" Margin="7,0,0,0"
+                                            BorderBrush="{Binding Selected.ReadinessTone, Converter={StaticResource Tone}}">
+                                        <TextBlock Text="{Binding Selected.Readiness}" FontSize="10.5"
+                                                   Foreground="{Binding Selected.ReadinessTone, Converter={StaticResource Tone}}" />
+                                    </Border>
+                                    <Border Style="{StaticResource Pill}" Margin="7,0,0,0" BorderBrush="{StaticResource Accent}">
+                                        <TextBlock Text="{Binding Selected.Mode}" FontSize="10.5" Foreground="{StaticResource AccentHover}" />
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                            <Button Grid.Column="1" Style="{StaticResource Play}" Command="{Binding PlayCommand}"
+                                    IsEnabled="{Binding CanPlay}" VerticalAlignment="Top" Margin="14,0,0,0"
+                                    ToolTip="Launch this game through Aveniq.">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE768;" FontFamily="{StaticResource IconFont}" FontSize="12"
+                                               Margin="0,0,8,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding PlayLabel}" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <TextBlock Text="{Binding ReadinessDetail}" Style="{StaticResource Caption}" Margin="0,12,0,0" />
+                        <TextBlock Style="{StaticResource Caption}" Margin="0,4,0,0">
+                            <Run Text="Last launch: " Foreground="{StaticResource Dim}" /><Run Text="{Binding LastResult}" />
+                        </TextBlock>
+
+                        <Border Style="{StaticResource Hairline}" Margin="0,13,0,11" />
+                        <WrapPanel>
+                            <Button Command="{Binding PrepareCommand}" Style="{StaticResource Primary}" Margin="0,0,7,6" Padding="12,5">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE945;" FontFamily="{StaticResource IconFont}" FontSize="11" Margin="0,0,7,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="Optimize &amp; Prepare" />
+                                </StackPanel>
+                            </Button>
+                            <Button Content="Game settings" Command="{Binding SettingsCommand}" Padding="11,5" Margin="0,0,7,6" />
+                            <Button Content="Install locally…" Command="{Binding InstallLocallyCommand}" Padding="11,5" Margin="0,0,7,6" />
+                            <Button Content="Re-analyze" Command="{Binding ReanalyzeCommand}" Padding="11,5" Margin="0,0,7,6" />
+                            <Button Content="Reset profile" Style="{StaticResource Ghost}" Command="{Binding ResetProfileCommand}" Margin="0,0,7,6" />
+                            <Button Content="Remove from library" Style="{StaticResource DangerButton}" Command="{Binding RemoveCommand}" Padding="11,5" Margin="0,0,0,6" />
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource Card}" Margin="0,0,12,0">
+                        <StackPanel>
+                            <TextBlock Text="Compatibility report" Style="{StaticResource H2}" Margin="0,0,0,2" />
+                            <TextBlock Text="Detected from executable headers and the game's file layout."
+                                       Style="{StaticResource Caption}" Margin="0,0,0,6" />
+                            <TextBlock Text="No compatibility issues reported for this game." Style="{StaticResource Caption}"
+                                       Margin="0,4,0,0" Visibility="{Binding Issues.Count, Converter={StaticResource NotVis}}" />
+                            <ItemsControl ItemsSource="{Binding Issues}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,3,0,8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="3" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border CornerRadius="2" Margin="0,2,10,2"
+                                                    Background="{Binding Severity, Converter={StaticResource Tone}}" />
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding Message}" TextWrapping="Wrap" FontSize="12" />
+                                                <TextBlock Text="{Binding Suggestion}" Style="{StaticResource Caption}" Margin="0,2,0,0"
+                                                           Visibility="{Binding Suggestion, Converter={StaticResource Vis}}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Details" Style="{StaticResource H2}" Margin="0,0,0,4" />
+                            <ItemsControl ItemsSource="{Binding Details}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="0,5">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="104" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Key}" FontSize="11" Foreground="{StaticResource Dim}" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" FontSize="11.5"
+                                                           Foreground="{Binding Tone, Converter={StaticResource Tone}}" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

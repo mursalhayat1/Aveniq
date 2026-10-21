@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>Aveniq</AssemblyName>
+    <RootNamespace>Aveniq.Desktop</RootNamespace>
+    <ApplicationIcon>Assets\aveniq.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- WinForms is used only for NotifyIcon. The WPF manifest owns DPI awareness, so the WinForms analyzer's
+         manifest warning is not applicable. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Remove="System.Drawing" />
+    <Using Remove="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Aveniq.App\Aveniq.App.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\aveniq.ico" />
+    <None Include="..\..\tools\rclone\rclone.exe" Link="tools\rclone\rclone.exe" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\tools\rclone\rclone.exe')" />
+    <None Include="..\..\tools\rclone\SHA256SUMS.v1.75.2" Link="tools\rclone\SHA256SUMS.v1.75.2" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\tools\rclone\SHA256SUMS.v1.75.2')" />
+    <None Include="..\..\tools\rclone-terabox\rclone.exe" Link="tools\rclone-terabox\rclone.exe" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\tools\rclone-terabox\rclone.exe')" />
+    <None Include="..\..\tools\rclone-terabox\README.txt" Link="tools\rclone-terabox\README.txt" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\tools\rclone-terabox\README.txt')" />
+  </ItemGroup>
+</Project>

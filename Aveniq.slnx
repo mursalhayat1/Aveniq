@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/Aveniq.Benchmarks/Aveniq.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Aveniq.App/Aveniq.App.csproj" />
+    <Project Path="src/Aveniq.Cache/Aveniq.Cache.csproj" />
+    <Project Path="src/Aveniq.Cli/Aveniq.Cli.csproj" />
+    <Project Path="src/Aveniq.Core/Aveniq.Core.csproj" />
+    <Project Path="src/Aveniq.Desktop/Aveniq.Desktop.csproj" />
+    <Project Path="src/Aveniq.Diagnostics/Aveniq.Diagnostics.csproj" />
+    <Project Path="src/Aveniq.Games/Aveniq.Games.csproj" />
+    <Project Path="src/Aveniq.Mount/Aveniq.Mount.csproj" />
+    <Project Path="src/Aveniq.Providers/Aveniq.Providers.csproj" />
+    <Project Path="src/Aveniq.SimCloud/Aveniq.SimCloud.csproj" />
+    <Project Path="src/Aveniq.Streaming/Aveniq.Streaming.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Aveniq.IntegrationTests/Aveniq.IntegrationTests.csproj" />
+    <Project Path="tests/Aveniq.Tests/Aveniq.Tests.csproj" />
+    <Project Path="tests/AveniqDemoGame/AveniqDemoGame.csproj" />
+  </Folder>
+</Solution>

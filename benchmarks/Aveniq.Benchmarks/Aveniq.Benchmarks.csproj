@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Aveniq.Core\Aveniq.Core.csproj" />
+    <ProjectReference Include="..\..\src\Aveniq.Diagnostics\Aveniq.Diagnostics.csproj" />
+    <ProjectReference Include="..\..\src\Aveniq.Mount\Aveniq.Mount.csproj" />
+    <ProjectReference Include="..\..\src\Aveniq.Providers\Aveniq.Providers.csproj" />
+    <ProjectReference Include="..\..\src\Aveniq.Cache\Aveniq.Cache.csproj" />
+    <ProjectReference Include="..\..\src\Aveniq.Streaming\Aveniq.Streaming.csproj" />
+    <ProjectReference Include="..\..\src\Aveniq.Games\Aveniq.Games.csproj" />
+    <ProjectReference Include="..\..\src\Aveniq.SimCloud\Aveniq.SimCloud.csproj" />
+    <ProjectReference Include="..\..\src\Aveniq.App\Aveniq.App.csproj" />
+  </ItemGroup>
+</Project>

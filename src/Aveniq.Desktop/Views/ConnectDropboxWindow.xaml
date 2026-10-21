@@ -1,0 +1,38 @@
+<Window x:Class="Aveniq.Desktop.Views.ConnectDropboxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Connect Dropbox" Width="600" Style="{StaticResource DialogWindow}" WindowStartupLocation="CenterOwner">
+    <StackPanel Margin="26,22">
+        <TextBlock Text="Connect Dropbox" Style="{StaticResource H1}" />
+        <TextBlock Style="{StaticResource Caption}" Margin="0,0,0,14" TextWrapping="Wrap"
+                   Text="Sign in on Dropbox's page in your browser. Aveniq never sees your Dropbox password; after authorization, your Dropbox root is mounted as a drive letter." />
+
+        <TextBlock Text="Account name" Style="{StaticResource Label}" />
+        <TextBox x:Name="NameBox" Margin="0,0,0,12" />
+
+        <Button x:Name="QuickButton" Style="{StaticResource Primary}" Content="Sign in with Dropbox" HorizontalAlignment="Stretch"
+                Padding="14,12" Click="QuickConnect" />
+        <TextBlock Style="{StaticResource Caption}" Margin="0,8,0,0" Foreground="{StaticResource Dim}"
+                   Text="Uses rclone's built-in Dropbox app. For most users, leave the advanced app key fields blank." />
+        <Button Content="Dropbox setup and app-key information" Style="{StaticResource Ghost}" HorizontalAlignment="Left"
+                Padding="0,2" Margin="0,8,0,0" Click="OpenInstructions" />
+
+        <CheckBox x:Name="AdvancedBox" Margin="0,14,0,0" Content="Use my own Dropbox app key and secret"
+                  Checked="AdvancedChanged" Unchecked="AdvancedChanged" />
+        <StackPanel x:Name="AdvancedPanel" Visibility="Collapsed" Margin="24,10,0,0">
+            <TextBlock Text="App key" Style="{StaticResource Label}" />
+            <TextBox x:Name="ClientIdBox" Margin="0,0,0,10" />
+            <TextBlock Text="App secret" Style="{StaticResource Label}" />
+            <PasswordBox x:Name="SecretBox" Margin="0,0,0,10" />
+            <Button x:Name="ConnectButton" Style="{StaticResource Primary}" Content="Connect with this app"
+                    HorizontalAlignment="Left" Click="ConnectWithCustomApp" />
+        </StackPanel>
+
+        <TextBlock x:Name="Status" Style="{StaticResource Caption}" Margin="0,14,0,0" Foreground="{StaticResource Accent}"
+                   MaxHeight="90" TextWrapping="Wrap" />
+        <ProgressBar x:Name="Progress" IsIndeterminate="True" Margin="0,8,0,0" Visibility="Collapsed" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+            <Button Content="Cancel" Click="Cancel" Margin="0" />
+        </StackPanel>
+    </StackPanel>
+</Window>
